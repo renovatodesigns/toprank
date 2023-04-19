@@ -1,0 +1,93 @@
+<main class="container section">
+    <h1>Manage User</h1>
+</main>
+
+<section class="form__section manage__form">
+    <input type="text" placeholder="Search.." style="width:300px">
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody class="scroll-container">
+            <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.firstName %> <%= user.lastName %> : <%= user.role %></td>
+                <td><a href="/user/edit?userId=<%= user.id %>"><i class='bx bxs-edit-alt btn-success'></i></a></td>
+                <td><i class='bx bxs-trash btn-danger' onclick="deleteUserWithConfirmation('<%= user.id %>')" id="deleteButton"></i></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</section>
+
+<!-- Check authentication State -->
+<script>
+    checkAuthState(null, "/");
+</script>
+
+
+<!-- Delete User -->
+<script>
+    async function deleteUserDetails(userId) {
+        try {
+            const response = await fetch('/deleteUser', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId }),
+            });
+
+            if (response.ok) {
+            console.log('User successfully deleted');
+            // Redirect or update the UI as needed
+            window.location.href = '/user/manage';
+            } else {
+            console.error('Error deleting user:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+        }
+</script>
+
+<script>
+    function deleteUserWithConfirmation(userId) {
+    const confirmation = confirm("Attention! Are you sure to delete this user");
+    if (confirmation) {
+        deleteUser(userId);
+    }
+    }
+
+    async function deleteUser(userId){
+        // Get a reference to the Firestore database
+            const db = firebase.firestore();
+
+        // Get a reference to the post document in Firestore
+        const userRef = db.collection('users').doc(userId);
+
+        try {
+            const userSnapshot = await userRef.get();
+
+            const imageUrl = userSnapshot.data().imageUrl;
+
+            function getImageFilenameFromUrl(url) {
+                const urlPath = new URL(url).pathname;
+                const segments = urlPath.split('/profile-images%2F');
+                return segments[segments.length - 1];
+            }
+
+            let filename = getImageFilenameFromUrl(imageUrl)
+            const storage = firebase.storage();
+            const imageRef = storage.ref(`profile-images/${filename}`);
+            await imageRef.delete();
+            deleteUserDetails(userId);
+        } catch (error){
+            console.error('Error deleting user and image:', error);
+        }
+    }
+</script>

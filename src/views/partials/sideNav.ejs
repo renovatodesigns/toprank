@@ -1,0 +1,41 @@
+<!--=============== NAV ===============-->
+<div class="nav" id="nav">
+    <nav class="nav__content">
+        <div class="nav__toggle" id="nav-toggle">
+            <i class='bx bx-chevron-right' ></i>
+        </div>
+  
+  
+        <div class="nav__list">
+            <a href="/home/posts/new" class="<%= activePage === 'addPost' ? 'nav__link active-link' : 'nav__link' %>">
+                <i class='bx bx-pen'></i>
+                <span class="nav__name">Add Post</span>
+            </a>
+  
+            <a href="/home" class="<%= activePage === 'home' ? 'nav__link active-link' : 'nav__link' %>">
+                <i class='bx bxs-edit' ></i>
+                <span class="nav__name">Manage Post</span>
+            </a>
+  
+             <a href="/user/new" class="<%= activePage === 'adduser' ? 'nav__link active-link' : 'nav__link' %>">
+                <i class='bx bxs-user-plus' ></i>
+                <span class="nav__name">Add User</span>
+            </a>
+
+            <a href="/user/manage" class="<%= activePage === 'manageuser' ? 'nav__link active-link' : 'nav__link' %>">
+                <i class='bx bxs-user-account' ></i>
+                <span class="nav__name">Manage User</span>
+            </a>
+
+            <a href="/category/new" class="<%= activePage === 'addcategory' ? 'nav__link active-link' : 'nav__link' %>">
+                <i class='bx bxs-duplicate'></i>
+                <span class="nav__name">Add Category</span>
+            </a>
+      
+            <a href="/category/manage" class="<%= activePage === 'managecategory' ? 'nav__link active-link' : 'nav__link' %>">
+                <i class='bx bxs-category-alt'></i>
+                <span class="nav__name">Manage Category</span>
+            </a>
+        </div>
+    </nav>
+  </div>

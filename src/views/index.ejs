@@ -1,0 +1,99 @@
+<!-- <h1>Blog</h1>
+<a href="/posts/new">Create new post</a>
+<% posts.forEach(post => { %>
+  <article>
+    <h2><%= post.title %></h2>
+    <p><%= post.content %></p>
+  </article>
+<% }) %>
+
+<button id="logout-btn">Logout</button> -->
+
+<!--=============== MAIN ===============-->
+<main class="container section">
+  <h1>Manage Post</h1>
+</main>
+
+<section class="form__section manage__form">
+  <a href="filter.html">
+      <button class="btn filter">Filter</button>
+  </a>
+  <table>
+      <thead>
+          <tr>
+              <th>Post</th>
+              <th>Edit</th>
+              <th>Delete</th>
+          </tr>
+      </thead>
+      <tbody class="scroll-container">
+        <% posts.forEach(post => { %>
+            <tr>
+                <td><%= post.title %>
+                    <h5>by : <a href="#">Add author here from the firebase authentication</a></h5>
+                </td>
+                <td><a href="/home/posts/edit?postId=<%= post.id %>"><i class='bx bxs-edit-alt btn-success'></i></a></td>
+                <td><i class='bx bxs-trash btn-danger' onclick="deletePostWithConfirmation('<%= post.id %>')" id="deleteButton"></i></td>
+            </tr>
+          <% }) %>
+      </tbody>
+  </table>
+</section>
+  
+  <!-- Check authentication State -->
+<script>
+  checkAuthState(null, "/");
+</script>
+
+<!-- Delete Post -->
+<script>
+  function deletePostWithConfirmation(postId) {
+  const confirmation = confirm("Attention! Are you sure to delete the Post");
+  if (confirmation) {
+    deletePost(postId);
+    console.log(postId);
+  }
+}
+
+  async function deletePost(postId){
+    // Initialize Firebase if you haven't already
+      // ...
+
+      // Get a reference to the Firestore database
+      const db = firebase.firestore();
+
+    // Get a reference to the post document in Firestore
+    const postRef = db.collection('posts').doc(postId);
+
+    // Add a click event listener to the delete button
+    try {
+      const postSnapshot = await postRef.get();
+
+      const imageUrl = postSnapshot.data().imageURL;
+
+      function getImageFilenameFromUrl(url) {
+          const urlPath = new URL(url).pathname;
+          const segments = urlPath.split('/images%2F');
+          return segments[segments.length - 1];
+      }
+
+      let filename = getImageFilenameFromUrl(imageUrl)
+      const storage = firebase.storage();
+      const imageRef = storage.ref(`images/${filename}`);
+      await imageRef.delete();
+
+      postRef
+      .delete()
+      .then(() => {
+      console.log('Post successfully deleted!');
+      // Redirect or update the UI as needed
+      window.location.href = '/home';
+      })
+      .catch((error) => {
+      console.error('Error deleting post:', error);
+      });
+    } catch (error){
+        console.error('Error deleting post and image:', error);
+    }
+  }
+</script>

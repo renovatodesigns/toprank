@@ -1,0 +1,54 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+<script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.9/firebase-auth-compat.js"></script>
+
+  <script src="/firebaseClient.js"></script>
+  
+</head>
+<body> -->
+  <!--=============== MAIN ===============-->
+  <section class="form__section signin">
+    <h1>Sign In</h1>
+    <div class="container form__section-container signin__container">
+        <form action="" enctype="multipart/form-data" id="sign-in-form">
+            
+            <input type="email" id="email" placeholder="Email">
+            
+            <input type="password" id="password" placeholder="Password">
+            
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+    </div>
+</section>
+
+<!-- Validate credentials using firebase authentication -->
+<script>
+  checkAuthState("/home", null);
+</script>
+
+  <script>
+    const signInForm = document.getElementById("sign-in-form");
+
+    signInForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = '/home';
+        })
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  </script>
+  <!-- </body>
+</html> -->

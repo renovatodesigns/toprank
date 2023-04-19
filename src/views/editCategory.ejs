@@ -1,0 +1,101 @@
+<section class="form__section">
+    <div class="container form__section-container">
+        <form id="editCategoryForm" enctype="multipart/form-data">
+            <input type="text" placeholder="Title" id="title">
+            <textarea rows="10" placeholder="Description" id="description"></textarea>
+            <input type="hidden" id="categoryId">
+
+            <button type="submit" class="btn">Edit Category</button>
+        </form>
+    </div>
+</section>
+
+<!-- Check Authentication State -->
+<script>
+    checkAuthState(null, "/");
+</script>
+
+<!-- Get Category Data -->
+<script>
+    async function loadCategoryData(categoryId) {
+        const db = firebase.firestore();
+        const categoryRef = db.collection('categories').doc(categoryId);
+        const categorySnapshot = await categoryRef.get();
+
+        if (categorySnapshot.exists) {
+            const categoryData = categorySnapshot.data();
+
+            document.getElementById('categoryId').value = categoryId;
+            document.getElementById('title').value = categoryData.title;
+            document.getElementById('description').value = categoryData.description;
+        } else {
+            console.error('User not found');
+            // Redirect or show an error message
+        }
+        }
+</script>
+
+<!-- Tranfer Category ID -->
+<script>
+    const categoryId = "<%= categoryId %>";
+    loadCategoryData(categoryId);
+</script>
+
+<!-- Edit Category Form Update -->
+<script>
+    document.getElementById('editCategoryForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const categoryId = document.getElementById('categoryId').value;
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+
+    const db = firebase.firestore();
+    const postRef = db.collection('categories').doc(categoryId);
+
+    try {
+        await postRef.update({
+        title: title,
+        description: description,
+        });
+
+        // Redirect to another page or display a success message
+        window.location.href = '/category/manage';
+    } catch (error) {
+        console.error('Error updating post:', error);
+        // Show an error message
+    }
+    });
+</script>
+
+<!-- Delete Category -->
+<script>
+    // Initialize Firebase if you haven't already
+    // ...
+
+    // Get a reference to the Firestore database
+    const db = firebase.firestore();
+
+    // Get a reference to the post document in Firestore
+    const categoryRef = db.collection('categories').doc(categoryId);
+
+    // Add a click event listener to the delete button
+    document.getElementById('deleteButton').addEventListener('click', async () => {
+    try {
+
+        categoryRef
+        .delete()
+        .then(() => {
+        console.log('Category successfully deleted!');
+        // Redirect or update the UI as needed
+        window.location.href = '/category/manage';
+        })
+        .catch((error) => {
+        console.error('Error deleting category:', error);
+        });
+    } catch (error){
+        console.error('Error deleting category:', error);
+    }
+    });
+
+</script>

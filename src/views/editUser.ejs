@@ -1,0 +1,186 @@
+<section class="form__section">
+    <div class="container form__section-container">
+        <form id="editUserForm">
+            <input type="hidden" id="userId" name="userId">
+            <input type="text" placeholder="First Name" name="firstName" id="firstName" required>
+            <input type="text" placeholder="Last Name" name="lastName" id="lastName" required>
+            <input type="text" placeholder="Username" name="username" id="username" required>
+            <input type="email" placeholder="Email" name="email", id="email" required>
+            <select name="role" id="role">
+                <option value="" disabled selected>Choose role</option>
+                <option value="author">Author</option>
+                <option value="admin">Admin</option>
+            </select>
+            <center><img id="myImage" name="myImage" alt="ok" class="avatar"></center>
+            <div class="form__control">
+                <label for="image">User Avatar</label>
+                <input type="file" id="image" accept="image/*">
+            </div>
+            <button type="submit" class="btn">Edit User</button>
+        </form>
+    </div>
+</section>
+
+<!-- Check Authentication State -->
+<script>
+    checkAuthState(null, "/");
+</script>
+
+<!-- Get User Data -->
+<script>
+    async function loadUserData(userId) {
+        const db = firebase.firestore();
+        const userRef = db.collection('users').doc(userId);
+        const userSnapshot = await userRef.get();
+
+        if (userSnapshot.exists) {
+            const userData = userSnapshot.data();
+
+            document.getElementById('userId').value = userId;
+            document.getElementById('firstName').value = userData.firstName;
+            document.getElementById('lastName').value = userData.lastName;
+            document.getElementById('username').value = userData.username;
+            document.getElementById('email').value = userData.email;
+            document.getElementById('role').value = userData.role;
+            const myImage = document.getElementById('myImage');
+            myImage.src = userData.imageUrl;
+        } else {
+            console.error('User not found');
+            // Redirect or show an error message
+        }
+        }
+</script>
+
+<!-- Tranfer User ID -->
+<script>
+    const userId = "<%= userId %>";
+    loadUserData(userId);
+</script>
+
+<script>
+    const user = firebase.auth().currentUser;
+    console.log(user);
+</script>
+
+<script>
+    async function updateUserDetails(userId, newEmail, newUsername, newRole, newImageUrl, newFirstName, newLastName) {
+    try {
+        const response = await fetch('/updateUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, newEmail, newUsername, newRole, newImageUrl, newFirstName, newLastName}),
+        });
+
+        if (response.ok) {
+        console.log('User details and email updated successfully');
+        // Redirect to another page or display a success message
+        window.location.href = '/user/manage';
+        } else {
+        console.error('Error updating user details and email:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error updating user details and email:', error);
+    }
+    }
+</script>
+
+<!-- Edit User Form Update -->
+<script>
+    document.getElementById('editUserForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const userId = document.getElementById('userId').value;
+    const newFirstName = document.getElementById('firstName').value;
+    const newLastName = document.getElementById('lastName').value;
+    const newUsername = document.getElementById('username').value;
+    const newEmail = document.getElementById('email').value;
+    const newRole = document.getElementById('role').value;
+    const imageInput = document.getElementById('image');
+    const newImageFile = imageInput.files[0];
+
+    
+
+    const db = firebase.firestore();
+    const userRef = db.collection('users').doc(userId);
+
+
+        let newImageUrl;
+        const userData = (await userRef.get()).data();
+        const oldImageFilename = userData.imageUrl;
+
+        // Check if a new image was selected
+        if (newImageFile) {
+        
+        // Upload the new image to Firebase Storage
+        const storage = firebase.storage();
+        const imagesRef = storage.ref(`profile-images/${userId}`);
+        await imagesRef.put(newImageFile);
+
+        // Get the download URL for the new image
+        newImageUrl = await imagesRef.getDownloadURL();
+        }
+        // console.log(oldImageFilename);
+        await updateUserDetails(userId, newEmail, newUsername, newRole, newImageUrl, newFirstName, newLastName);
+    });
+</script>
+
+<!-- Delete User -->
+<script>
+    async function deleteUser(userId) {
+        try {
+            const response = await fetch('/deleteUser', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId }),
+            });
+
+            if (response.ok) {
+            console.log('User successfully deleted');
+            // Redirect or update the UI as needed
+            window.location.href = '/user/manage';
+            } else {
+            console.error('Error deleting user:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+        }
+</script>
+
+<!-- Delete user image-->
+<script>
+    document.getElementById('deleteButton').addEventListener('click', async () => {
+    // Replace this with the actual user ID you want to delete
+    // const userId = 'your-user-id-here';
+    // Get a reference to the Firestore database
+    const db = firebase.firestore();
+
+    // Get a reference to the post document in Firestore
+    const userRef = db.collection('users').doc(userId);
+
+    try {
+        const userSnapshot = await userRef.get();
+
+        const imageUrl = userSnapshot.data().imageUrl;
+
+        function getImageFilenameFromUrl(url) {
+            const urlPath = new URL(url).pathname;
+            const segments = urlPath.split('/profile-images%2F');
+            return segments[segments.length - 1];
+        }
+
+        let filename = getImageFilenameFromUrl(imageUrl)
+        const storage = firebase.storage();
+        const imageRef = storage.ref(`profile-images/${filename}`);
+        await imageRef.delete();
+        deleteUser(userId);
+    } catch (error){
+        console.error('Error deleting user and image:', error);
+    }
+    });
+    
+</script>

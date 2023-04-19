@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--=============== BOXICONS ===============-->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <!--=============== CSS ===============-->
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <title><%= pageTitle %></title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <script src="/firebaseClient.js"></script>
+</head>
+<body>
+  <% if (showTopbar) { %>
+    <%- include('partials/topNav') %>
+  <% } %>
+
+  <% if (showSidebar) { %>
+    <%- include('partials/sideNav') %>
+  <% } %>
+
+  <% if (showEditNav) { %>
+    <%- include('partials/editNav') %>
+  <% } %>
+
+  <%- body %>
+  <script src="/assets/js/main.js"></script>
+
+  <script>
+    async function getUserDetails(uid) {
+    const db = firebase.firestore();
+    const userRef = db.collection('users').doc(uid);
+    const userSnapshot = await userRef.get();
+  
+    if (userSnapshot.exists) {
+      const userData = userSnapshot.data();
+      const userDetailsElement = document.getElementById('name');
+      userDetailsElement.innerHTML = `
+        ${userData.firstName} ${userData.lastName}
+      `;
+      const myImage = document.getElementById('myImage');
+      myImage.src = userData.imageUrl;
+      console.log('User data:', userData);
+    } else {
+      console.error('User not found in the database');
+    }
+  }
+  
+    firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+      console.log('User signed in:', user.uid);
+      await getUserDetails(user.uid);
+    } else {
+      console.log('No user is currently signed in');
+    }
+  });
+  </script>
+
+  <script>
+    const logoutBtn = document.getElementById("logout-btn");
+  
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await firebase.auth().signOut();
+        alert("Logout successful!");
+        // Redirect to the sign-in page after successful logout
+        window.location.href = "/";
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+      }
+    });
+  </script>
+</body>
+</html>

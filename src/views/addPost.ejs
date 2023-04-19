@@ -1,0 +1,116 @@
+<!-- <h1>Create new post</h1>
+<form action="/home/posts/create" method="POST">
+  <label for="title">Title:</label>
+  <input type="text" name="title" required>
+  <br>
+  <label for="content">Content:</label>
+  <textarea name="content" required></textarea>
+  <br>
+  <button type="submit">Create post</button>
+</form> -->
+
+<!--=============== MAIN ===============-->
+<main class="container section">
+  <h1>Add Post</h1>
+</main>
+<!-- enctype="multipart/form-data" -->
+
+<section class="form__section">
+  <div class="container form__section-container">
+      <form id="createPostForm" enctype="multipart/form-data">
+          <input type="text" placeholder="Title" name="title" required>
+          <select name="category" id="category" class="select__content">
+            <% categories.forEach(category => { %>
+              <option value="<%= category.title %>"><%= category.title %></option>
+            <% }) %>
+          </select>
+          <textarea rows="10" placeholder="Body" name="content" required></textarea>
+         
+
+          <div class="select">
+              <div>
+                  <input type="radio" id="purpose" name="purpose" value="featured">
+                  <label for="featured">Featured</label>
+              </div>
+            
+              <div>
+                  <input type="radio" id="purpose" name="purpose" value="news"
+                         checked>
+                  <label for="news">News</label>
+              </div>
+
+              <div>
+                  <input type="radio" id="purpose" name="purpose" value="announcement">
+                  <label for="announcement">Announcement</label>
+              </div>
+            
+              <div>
+                  <input type="radio" id="purpose" name="purpose" value="promo">
+                  <label for="promo">Promos</label>
+              </div>
+          </div>
+             
+          
+          <div class="form__control">
+              <label for="thumbnail">Add Thumbnail</label>
+              <input type="file" name="image" id="image" accept="image/*" required>
+          </div>
+          <button type="submit" class="btn">Add Post</button>
+      </form>
+  </div>
+</section>
+
+<script>
+    // Reference to the form element
+    const form = document.getElementById('createPostForm');
+  
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      // Reference to the file input element
+      const imageInput = document.getElementById('image');
+      const file = imageInput.files[0];
+  
+      // Generate a unique filename for the uploaded file
+      const storageRef = firebase.storage().ref();
+      const fileName = Date.now() + '-' + file.name;
+      const fileRef = storageRef.child('images/' + fileName);
+  
+      // Upload the file to Firebase Storage
+      const snapshot = await fileRef.put(file);
+      const imageURL = await snapshot.ref.getDownloadURL();
+  
+      // Your other form fields go here
+      const title = form.title.value;
+      const content = form.content.value;
+      const category = form.category.value;
+      const purpose = form.purpose.value;
+      const createdAt = new Date();
+      const updatedAt = new Date();
+  
+      // Save the post details and image URL to the Firebase Database
+      const postData = {
+        title: title,
+        content: content,
+        imageURL: imageURL,
+        category: category,
+        purpose: purpose,
+        created_at: createdAt,
+        updated_at: updatedAt,
+        // Add other post data as needed
+      };
+
+      console.log(postData);
+  
+      const db = firebase.firestore();
+      await db.collection('posts').add(postData);
+  
+      // Redirect to another page or display a success message
+      window.location.href = '/home';
+    });
+  </script>
+  
+
+<script>
+  checkAuthState(null, "/");
+</script>

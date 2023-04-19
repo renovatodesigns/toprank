@@ -1,0 +1,183 @@
+<section class="form__section">
+    <div class="container form__section-container">
+        <form id="editPostForm" enctype="multipart/form-data">
+            <input type="hidden" id="postId">
+            <input type="text" placeholder="Title" name="title" id="title" required>
+            <select name="category" id="category" class="select__content">
+                <% categories.forEach(category => { %>
+                    <option value="<%= category.title %>"><%= category.title %></option>
+                  <% }) %>
+            </select>
+            <textarea rows="10" placeholder="Body" name="content" id="content" required></textarea>
+           
+  
+            <div class="select">
+                <div>
+                    <input type="radio" id="purpose" name="purpose" value="featured">
+                    <label for="featured">Featured</label>
+                </div>
+              
+                <div>
+                    <input type="radio" id="purpose" name="purpose" value="news">
+                    <label for="news">News</label>
+                </div>
+  
+                <div>
+                    <input type="radio" id="purpose" name="purpose" value="announcement">
+                    <label for="announcement">Announcement</label>
+                </div>
+              
+                <div>
+                    <input type="radio" id="purpose" name="purpose" value="promo">
+                    <label for="promo">Promos</label>
+                </div>
+            </div>
+               
+            <img id="myImage" alt="My Image">
+
+            <div class="form__control">
+                <label for="thumbnail">Add Thumbnail</label>
+                <input type="file" name="image" id="image" accept="image/*">
+            </div>
+            <button type="submit" class="btn">Add Post</button>
+        </form>
+    </div>
+  </section>
+
+<!-- Check Authentication State -->
+<script>
+    checkAuthState(null, "/");
+  </script>
+
+<!-- Get Post Data -->
+<script>
+    async function loadPostData(postId) {
+        const db = firebase.firestore();
+        const postRef = db.collection('posts').doc(postId);
+        const postSnapshot = await postRef.get();
+
+        if (postSnapshot.exists) {
+            const postData = postSnapshot.data();
+            document.getElementById('postId').value = postId;
+            document.getElementById('title').value = postData.title;
+            document.getElementById('content').value = postData.content;
+            document.getElementById('category').value = postData.category;
+            const selectedValue = postData.purpose;
+            const radioButtons = document.querySelectorAll('input[name="purpose"]');
+            radioButtons.forEach((radioButton) => {
+            if (radioButton.value === selectedValue) {
+                radioButton.checked = true;
+            }
+            });
+            const myImage = document.getElementById('myImage');
+            myImage.src = postData.imageURL
+        } else {
+            console.error('Post not found');
+            // Redirect or show an error message
+        }
+        }
+</script>
+
+<!-- Tranfer Post ID -->
+<script>
+    const postId = "<%= postId %>";
+    loadPostData(postId);
+</script>
+
+<!-- Edit Post Form Update -->
+<script>
+    document.getElementById('editPostForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const postId = document.getElementById('postId').value;
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+    const purpose = document.getElementById('purpose').value;
+    const category = document.getElementById('category').value;
+    const imageInput = document.getElementById('image');
+    const newImageFile = imageInput.files[0];
+    const updatedAt = new Date();
+
+    const db = firebase.firestore();
+    const postRef = db.collection('posts').doc(postId);
+
+    try {
+        let imageUrl;
+        const postData = (await postRef.get()).data();
+        const oldImageFilename = postData.imageFilename;
+
+        // Check if a new image was selected
+        if (newImageFile) {
+        
+        // Upload the new image to Firebase Storage
+        const storage = firebase.storage();
+        const imagesRef = storage.ref(`images/${oldImageFilename}`);
+        await imagesRef.put(newImageFile);
+
+        // Get the download URL for the new image
+        imageUrl = await imagesRef.getDownloadURL();
+        }
+
+        await postRef.update({
+        title: title,
+        content: content,
+        purpose: purpose,
+        category: category,
+        ...(imageUrl && { imageURL: imageUrl }),
+        updated_at: updatedAt,
+        });
+
+        // Redirect to another page or display a success message
+        window.location.href = '/home';
+    } catch (error) {
+        console.error('Error updating post:', error);
+        // Show an error message
+    }
+    });
+</script>
+
+<!-- Delete Post -->
+<script>
+    // Initialize Firebase if you haven't already
+    // ...
+
+    // Get a reference to the Firestore database
+    const db = firebase.firestore();
+
+    // Get a reference to the post document in Firestore
+    const postRef = db.collection('posts').doc(postId);
+
+    // Add a click event listener to the delete button
+    document.getElementById('deleteButton').addEventListener('click', async () => {
+    try {
+        const postSnapshot = await postRef.get();
+
+        const imageUrl = postSnapshot.data().imageURL;
+
+        function getImageFilenameFromUrl(url) {
+            const urlPath = new URL(url).pathname;
+            const segments = urlPath.split('/images%2F');
+            return segments[segments.length - 1];
+        }
+
+        let filename = getImageFilenameFromUrl(imageUrl)
+        const storage = firebase.storage();
+        const imageRef = storage.ref(`images/${filename}`);
+        await imageRef.delete();
+
+        postRef
+        .delete()
+        .then(() => {
+        console.log('Post successfully deleted!');
+        // Redirect or update the UI as needed
+        window.location.href = '/home';
+        })
+        .catch((error) => {
+        console.error('Error deleting post:', error);
+        });
+    } catch (error){
+        console.error('Error deleting post and image:', error);
+    }
+    });
+
+</script>

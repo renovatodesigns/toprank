@@ -1,0 +1,47 @@
+<!--=============== MAIN ===============-->
+<main class="container section">
+    <h1>Add Category</h1>
+</main>
+
+<section class="form__section">
+    <div class="container form__section-container">
+        <form id="createCategoryForm" enctype="multipart/form-data">
+            <input type="text" placeholder="Title" id="title">
+            <textarea rows="10" placeholder="Description" id="description"></textarea>
+
+            <button type="submit" class="btn">Add Category</button>
+        </form>
+    </div>
+</section>
+
+
+<script>
+    // Reference to the form element
+    const form = document.getElementById('createCategoryForm');
+  
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      // Your other form fields go here
+      const title = form.title.value;
+      const description = form.description.value;
+  
+      // Save the post details and image URL to the Firebase Database
+      const categoryData = {
+        title: title,
+        description: description,
+      };
+
+      console.log(categoryData);
+  
+      const db = firebase.firestore();
+      await db.collection('categories').add(categoryData);
+  
+      // Redirect to another page or display a success message
+      window.location.href = '/category/manage';
+    });
+  </script>
+
+<script>
+    checkAuthState(null, "/");
+</script>
