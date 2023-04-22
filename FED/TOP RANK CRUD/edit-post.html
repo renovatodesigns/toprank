@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--=============== BOXICONS ===============-->
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+
+
+        <!--=============== CSS ===============-->
+        <link rel="stylesheet" href="assets/css/styles.css">
+
+        <title>Edit Post</title>
+    </head>
+    <body>
+        <!--=============== MAIN ===============-->
+        <main class="container section edit">
+            <a href="manage-post.html" class="back__button" alt="Back"><i class='bx bx-left-arrow-circle'></i></a>
+            <h1>Edit Post</h1>
+            <a href="" class="delete__button" alt="Delete Post"><i class='bx bxs-trash'></i></a>
+        </main>
+
+        <section class="form__section">
+            <div class="container form__section-container">
+                <form action="" enctype="multipart/form-data">
+                    <input type="text" placeholder="Title">
+                    <select name="" id="" class="select__content">
+                        <option value="1">Nursing</option>
+                        <option value="1">Dentistry</option>
+                        <option value="1">LET</option>
+                        <option value="1">Psychometrics</option>
+                        <option value="1">Criminology</option>
+                        <option value="1">Midwifery</option>
+                    </select>
+                    <textarea rows="10" placeholder="Body"></textarea>
+                   
+
+                    <div class="select">
+                        <div>
+                            <input type="radio" id="huey" name="drone" value="huey"
+                                   checked>
+                            <label for="huey">Featured</label>
+                        </div>
+                      
+                        <div>
+                            <input type="radio" id="dewey" name="drone" value="dewey">
+                            <label for="dewey">Top Ranker</label>
+                        </div>
+                      
+                        <div>
+                            <input type="radio" id="louie" name="drone" value="louie">
+                            <label for="louie">Promos</label>
+                        </div>
+                    </div>
+                       
+                    
+                    <div class="form__control">
+                        <label for="thumbnail">Edit Thumbnail</label>
+                        <input type="file" name="" id="thubnail">
+                    </div>
+                    <button type="submit" class="btn">Edit Post</button>
+                </form>
+            </div>
+        </section>
+
+        <!--=============== MAIN JS ===============-->
+        <script src="assets/js/main.js"></script>
+    </body>
+</html>

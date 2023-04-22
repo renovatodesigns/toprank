@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--=============== BOXICONS ===============-->
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+
+
+        <!--=============== CSS ===============-->
+        <link rel="stylesheet" href="assets/css/styles.css">
+
+        <title>Manage Post</title>
+    </head>
+    <body>
+        <!-- TOP Navigation -->
+        <ul class="top__nav">
+            <li>
+                <a href="#home">
+                    <img src="/assets/img/logo.png" alt="" style="max-height: 45px;" class="logo1">
+                </a>
+            </li>
+            <li style="float:right; display: flex; align-items: center;" class="author__profile">
+                Hello,
+                <div>
+                    <a href="#about" style="color: red; font-weight: 600; font-size: 1rem;">Joana Dela Cruz
+                        <img src="/assets/img/avatar2.jpg" alt="Avatar" class="avatar dropdown" >
+                    </a>
+                    <ul>
+                        <li><a href="signin.html">Log out</a></li>
+                    </ul>  
+                </div>
+                
+            </li>
+        </ul>
+        <!--=============== NAV ===============-->
+        <div class="nav" id="nav">
+            <nav class="nav__content">
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class='bx bx-chevron-right' ></i>
+                </div>
+    
+    
+                <div class="nav__list">
+                    <a href="add-post.html" class="nav__link">
+                        <i class='bx bx-pen'></i>
+                        <span class="nav__name">Add Post</span>
+                    </a>
+    
+                    <a href="manage-post.html" class="nav__link  active-link">
+                        <i class='bx bxs-edit' ></i>
+                        <span class="nav__name">Manage Post</span>
+                    </a>
+    
+                    <a href="add-user.html" class="nav__link">
+                        <i class='bx bxs-user-plus' ></i>
+                        <span class="nav__name">Add User</span>
+                    </a>
+    
+                    <a href="manage-user.html" class="nav__link">
+                        <i class='bx bxs-user-account' ></i>
+                        <span class="nav__name">Manage User</span>
+                    </a>
+    
+                    <a href="add-category.html" class="nav__link">
+                        <i class='bx bxs-duplicate'></i>
+                        <span class="nav__name">Add Category</span>
+                    </a>
+
+                    <a href="manage-category.html" class="nav__link">
+                        <i class='bx bxs-category-alt'></i>
+                        <span class="nav__name">Manage Category</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+
+        <!--=============== MAIN ===============-->
+        <main class="container section">
+            <h1>Manage Post</h1>
+        </main>
+
+        <section class="form__section manage__form">
+            <a href="filter.html">
+                <button class="btn filter">Filter</button>
+            </a>
+            <table  class="manage__table">
+                <thead>
+                    <tr>
+                        <th>Post</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="scroll-container">
+                    <tr>
+                        <td>Why We Love Nursing (And You Should, Too!)
+                            <h5>by : <a href="#">Adria Vela</a></h5>
+                        </td>
+                        <td><a href="edit-post.html"><i class='bx bxs-edit-alt btn-success'></i></a></td>
+                        <td><i class='bx bxs-trash btn-danger' onclick="myalert()"></i></td>
+                    </tr>
+                    <tr>
+                        <td>The Ultimate Guide to Midwifery
+                            <h5>by : <a href="#">Gerardo Arnaiz</a></h5>
+                        </td>
+                        <td><a href="edit-post.html"><i class='bx bxs-edit-alt btn-success'></i></a></td>
+                        <td><i class='bx bxs-trash btn-danger' onclick="myalert()"></i></td>
+                    </tr>
+                    <tr>
+                        <td>15 Reasons Why You Shouldn't Ignore Teaching
+                            <h5>by : <a href="#">Eusebio Cardenas</a></h5>
+                        </td>
+                        <td><a href="edit-post.html"><i class='bx bxs-edit-alt btn-success'></i></a></td>
+                        <td><i class='bx bxs-trash btn-danger' onclick="myalert()"></i></td>
+                    </tr>
+                    <tr>
+                        <td>5 Things Everyone Gets Wrong About Dentistry
+                            <h5>by : <a href="#">Adrian Zhou</a></h5>
+                        </td>
+                        <td><a href="edit-post.html"><i class='bx bxs-edit-alt btn-success'></i></a></td>
+                        <td><i class='bx bxs-trash btn-danger' onclick="myalert()"></i></td>
+                    </tr>
+                    <tr>
+                        <td>What I Wish Everyone Knew About Criminology.
+                            <h5>by : <a href="#">Narciso Cañizares</a></h5>
+                        </td>
+                        <td><a href="edit-post.html"><i class='bx bxs-edit-alt btn-success'></i></a></td>
+                        <td><i class='bx bxs-trash btn-danger' onclick="myalert()"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Psychometrics: All the Stats, Facts, and Data You'll Ever Need to Know
+                            <h5>by : <a href="#">Rayan Zamorano</a></h5>
+                        </td>
+                        <td><a href="edit-post.html"><i class='bx bxs-edit-alt btn-success'></i></a></td>
+                        <td><i class='bx bxs-trash btn-danger' onclick="myalert()"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!--=============== MAIN JS ===============-->
+        <script src="assets/js/main.js"></script>
+        <script>
+            function myalert() {
+                alert("Attention! Are you sure to delete the Post");
+            }
+        </script>
+       
+    </body>
+</html>

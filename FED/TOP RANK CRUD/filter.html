@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--=============== BOXICONS ===============-->
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+
+
+        <!--=============== CSS ===============-->
+        <link rel="stylesheet" href="assets/css/styles.css">
+
+        <title>Filter</title>
+    </head>
+    <body>
+        
+        <!--=============== MAIN ===============-->
+        <main class="container section edit">
+            <a href="manage-post.html" class="back__button" alt="Back"><i class='bx bx-left-arrow-circle'></i></a>
+            <h1>Filter</h1>
+            <a href="" class="delete__button" alt="Clear All"><i class='bx bxs-eraser'></i></a>
+        </main>
+
+        <section class="form__section">
+            <div class="container form__section-container">
+                <form action="" enctype="multipart/form-data">
+                    <label for="start" class="filter__content">Start date:</label>
+                    <input  type="date" id="start" 
+                            name="trip-start" 
+                            value="2018-07-22" 
+                            min="2000-01-01" 
+                            max="2023-12-31">
+
+                    <label for="end" class="filter__content">End date:</label>
+                    <input  type="date" id="start" 
+                            name="trip-start" 
+                            value="2000-07-22" 
+                            min="2018-01-01" 
+                            max="2023-12-31">
+
+                            <hr>
+                    <label for="" class="filter__content"><i class='bx bx-list-ul' ></i>Category</label>
+                    <select>
+                        <option value="1">Nursing</option>
+                        <option value="1">Dentistry</option>
+                        <option value="1">LET</option>
+                        <option value="1">Psychometrics</option>
+                        <option value="1">Criminology</option>
+                        <option value="1">Midwifery</option>
+                    </select>
+
+                    <hr>
+
+                    <label for="" class="filter__content"><i class='bx bx-user-circle' ></i>Author</label>
+                    <select>
+                        <option value="1">Peter</option>
+                        <option value="1">John</option>
+                        <option value="1">Matthew</option>
+                        <option value="1">Mark</option>
+                        <option value="1">Luke</option>
+                        <option value="1">Paul</option>
+                    </select>
+                    <button type="submit" class="btn">Apply Filter</button>
+                </form>
+            </div>
+        </section>
+
+        <!--=============== MAIN JS ===============-->
+        <script src="assets/js/main.js"></script>
+    </body>
+</html>
