@@ -1,15 +1,16 @@
+// src/controllers/authController.js
+
+let css = "/assets/css/styles.css";
 function signIn(req, res) {
-    res.render('sign_in', {pageTitle: "Sign In | Toprank", showSidebar: false, showTopbar: false, showEditNav: false});
+  const pageTitle = "Sign In | Toprank";
+  let showSidebar = false;
+  let showTopbar = false;
+  let showEditNav = false;
+  let showOthers = false;
+
+    res.render('auth/sign_in', {pageTitle, showSidebar, showTopbar, showEditNav, css, showOthers});
 }
 
-
-
-// src/controllers/authController.js
-function signUp(req, res) {
-    res.render('sign_up');
-  }
-  
-  module.exports = {
-    signIn,
-    signUp
-  };
+module.exports = {
+  signIn
+};

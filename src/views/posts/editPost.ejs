@@ -39,7 +39,7 @@
                 <label for="thumbnail">Add Thumbnail</label>
                 <input type="file" name="image" id="image" accept="image/*">
             </div>
-            <button type="submit" class="btn">Add Post</button>
+            <button type="submit" class="btn">Edit Post</button>
         </form>
     </div>
   </section>
@@ -86,13 +86,14 @@
 
 <!-- Edit Post Form Update -->
 <script>
+    const form = document.getElementById('editPostForm');
     document.getElementById('editPostForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const postId = document.getElementById('postId').value;
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
-    const purpose = document.getElementById('purpose').value;
+    const purpose = form.purpose.value;
     const category = document.getElementById('category').value;
     const imageInput = document.getElementById('image');
     const newImageFile = imageInput.files[0];
@@ -117,7 +118,6 @@
         // Get the download URL for the new image
         imageUrl = await imagesRef.getDownloadURL();
         }
-
         await postRef.update({
         title: title,
         content: content,

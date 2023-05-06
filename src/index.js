@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 
 
 
-app.use('/', authRoutes);
+app.use('/login', authRoutes);
 app.use('/home', postRoutes);
 app.use('/user', userRoutes);
 app.use('/dashboard', dashboardRoutes);
@@ -83,5 +83,7 @@ app.delete('/deleteUser', async (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+  console.log("==========================================");
+  console.log(`||App listening at http://localhost:${port}||`);
+  console.log("==========================================");
 });

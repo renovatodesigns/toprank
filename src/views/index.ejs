@@ -1,21 +1,10 @@
-<!-- <h1>Blog</h1>
-<a href="/posts/new">Create new post</a>
-<% posts.forEach(post => { %>
-  <article>
-    <h2><%= post.title %></h2>
-    <p><%= post.content %></p>
-  </article>
-<% }) %>
-
-<button id="logout-btn">Logout</button> -->
-
 <!--=============== MAIN ===============-->
 <main class="container section">
   <h1>Manage Post</h1>
 </main>
 
 <section class="form__section manage__form">
-  <a href="filter.html">
+  <a href="/home/posts/filter">
       <button class="btn filter">Filter</button>
   </a>
   <table>
@@ -29,8 +18,8 @@
       <tbody class="scroll-container">
         <% posts.forEach(post => { %>
             <tr>
-                <td><%= post.title %>
-                    <h5>by : <a href="#">Add author here from the firebase authentication</a></h5>
+                <td><a href="/home/posts/view?postId=<%= post.id %>"><%= post.title %></a>
+                    <h5>by : <%= post.author %></h5>
                 </td>
                 <td><a href="/home/posts/edit?postId=<%= post.id %>"><i class='bx bxs-edit-alt btn-success'></i></a></td>
                 <td><i class='bx bxs-trash btn-danger' onclick="deletePostWithConfirmation('<%= post.id %>')" id="deleteButton"></i></td>
@@ -42,7 +31,7 @@
   
   <!-- Check authentication State -->
 <script>
-  checkAuthState(null, "/");
+  checkAuthState(null, "/login");
 </script>
 
 <!-- Delete Post -->

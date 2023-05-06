@@ -19,3 +19,35 @@
     </li>
   </ul>
 
+
+  <script>
+    let userData;
+    async function getUserDetails(uid) {
+    const db = firebase.firestore();
+    const userRef = db.collection('users').doc(uid);
+    const userSnapshot = await userRef.get();
+  
+    if (userSnapshot.exists) {
+      userData = userSnapshot.data();
+      const userDetailsElement = document.getElementById('name');
+      userDetailsElement.innerHTML = `
+        ${userData.firstName} ${userData.lastName}
+      `;
+      const myImage = document.getElementById('myImage');
+      myImage.src = userData.imageUrl;
+      console.log('User data:', userData);
+    } else {
+      console.error('User not found in the database');
+    }
+  }
+  
+    firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+      console.log('User signed in:', user.uid);
+      await getUserDetails(user.uid);
+    } else {
+      console.log('No user is currently signed in');
+    }
+  });
+  </script>
+

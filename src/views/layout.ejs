@@ -6,7 +6,10 @@
   <!--=============== BOXICONS ===============-->
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
   <!--=============== CSS ===============-->
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="<%= css %>">
+  <% if (showOthers) { %>
+    <%- include('partials/others') %>
+  <% } %>
   <title><%= pageTitle %></title>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -29,36 +32,11 @@
 
   <%- body %>
   <script src="/assets/js/main.js"></script>
-
-  <script>
-    async function getUserDetails(uid) {
-    const db = firebase.firestore();
-    const userRef = db.collection('users').doc(uid);
-    const userSnapshot = await userRef.get();
   
-    if (userSnapshot.exists) {
-      const userData = userSnapshot.data();
-      const userDetailsElement = document.getElementById('name');
-      userDetailsElement.innerHTML = `
-        ${userData.firstName} ${userData.lastName}
-      `;
-      const myImage = document.getElementById('myImage');
-      myImage.src = userData.imageUrl;
-      console.log('User data:', userData);
-    } else {
-      console.error('User not found in the database');
-    }
-  }
-  
-    firebase.auth().onAuthStateChanged(async (user) => {
-    if (user) {
-      console.log('User signed in:', user.uid);
-      await getUserDetails(user.uid);
-    } else {
-      console.log('No user is currently signed in');
-    }
-  });
-  </script>
+  <script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
+></script>
 
   <script>
     const logoutBtn = document.getElementById("logout-btn");
@@ -68,7 +46,7 @@
         await firebase.auth().signOut();
         alert("Logout successful!");
         // Redirect to the sign-in page after successful logout
-        window.location.href = "/";
+        window.location.href = "/login";
       } catch (error) {
         alert(`Error: ${error.message}`);
       }

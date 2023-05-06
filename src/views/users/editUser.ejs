@@ -57,11 +57,7 @@
     loadUserData(userId);
 </script>
 
-<script>
-    const user = firebase.auth().currentUser;
-    console.log(user);
-</script>
-
+<!-- Update User Details -->
 <script>
     async function updateUserDetails(userId, newEmail, newUsername, newRole, newImageUrl, newFirstName, newLastName) {
     try {
@@ -109,7 +105,7 @@
         let newImageUrl;
         const userData = (await userRef.get()).data();
         const oldImageFilename = userData.imageUrl;
-
+        newImageUrl = oldImageFilename;
         // Check if a new image was selected
         if (newImageFile) {
         
@@ -121,6 +117,7 @@
         // Get the download URL for the new image
         newImageUrl = await imagesRef.getDownloadURL();
         }
+        
         // console.log(oldImageFilename);
         await updateUserDetails(userId, newEmail, newUsername, newRole, newImageUrl, newFirstName, newLastName);
     });

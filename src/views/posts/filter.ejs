@@ -1,0 +1,46 @@
+<!--=============== MAIN ===============-->
+<main class="container section edit">
+    <a href="/home/" class="back__button" alt="Back"><i class='bx bx-left-arrow-circle'></i></a>
+    <h1>Filter</h1>
+    <a href="" class="delete__button" alt="Clear All"><i class='bx bxs-eraser'></i></a>
+</main>
+
+<section class="form__section">
+    <div class="container form__section-container">
+        <form action="/home/posts" method="GET">
+            <label for="start" class="filter__content">Start date:</label>
+            <input  type="date" id="startDate" 
+                    name="startDate" 
+                    value="2018-07-22" 
+                    min="2000-01-01" 
+                    max="2023-12-31">
+
+            <label for="end" class="filter__content">End date:</label>
+            <input  type="date" id="endDate" 
+                    name="endDate" 
+                    value="2000-07-22" 
+                    min="2018-01-01" 
+                    max="2023-12-31">
+
+                    <hr>
+            <label for="" class="filter__content"><i class='bx bx-list-ul' ></i>Category</label>
+            <select name="category" id="category">
+                <option value="Nursing">Nursing</option>
+                <option value="Dentistry">Dentistry</option>
+                <option value="LET">LET</option>
+                <option value="Psychometrics">Psychometrics</option>
+                <option value="Criminology">Criminology</option>
+                <option value="Midwifery">Midwifery</option>
+            </select>
+
+            <hr>
+
+            <label for="" class="filter__content"><i class='bx bx-user-circle' ></i>Author</label>
+            <select name="author" id="author">
+                <option value="Renovato Design">Renovato Design</option>
+                <option value="John Doe">John Doe</option>
+            </select>
+            <button type="submit" class="btn">Apply Filter</button>
+        </form>
+    </div>
+</section>
