@@ -191,6 +191,8 @@
                 color: #8D1826;">Programs
         </div>
         <!-- Accordion -->
+
+        <!--  -->
         <div class="accordion accordion-borderless" id="accordionPanelsStayOpenExample">
 
           <!-- Nursing -->
@@ -423,7 +425,7 @@
           </div>
 
 
-          </div>
+        </div>
     </div>
 
   </section>
@@ -717,5 +719,24 @@
 <script
   type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
-></script>
+>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    /* Toggle between hiding and showing the active panel */
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
 </html>
