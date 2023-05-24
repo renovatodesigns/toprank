@@ -476,3 +476,9 @@ button.accordion__program{
 .accordion-body > div {
   font-size: 14px !important;
 }
+
+/* Contact */
+
+.branch {
+  color: var(--toprank-primary-red);
+}
